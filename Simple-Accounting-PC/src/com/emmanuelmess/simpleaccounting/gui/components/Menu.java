@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -14,9 +13,10 @@ public class Menu extends JMenuBar implements ActionListener {
 	
 	MenuListener listener;
 	
-	protected final String nameNew = "New";
-	protected final String nameDel = "Delete";
+	protected final String nameNew = "New row";
+	protected final String nameDel = "Delete row";
 	protected final String nameUpdate = "Check for updates";
+	protected final String namePrint = "Print...";
 	protected final String nameAbout = "About...";
 	
 	public Menu(MenuListener l) {
@@ -32,17 +32,24 @@ public class Menu extends JMenuBar implements ActionListener {
 		add(menu);
 
 		{
-			menuItem = new JMenuItem(nameNew, KeyEvent.VK_T);
+			menuItem = new JMenuItem(nameNew, KeyEvent.VK_N);
 			menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
 					ActionEvent.CTRL_MASK));
-			menuItem.getAccessibleContext().setAccessibleDescription("New row");
+			menuItem.getAccessibleContext().setAccessibleDescription(nameNew);
 			menuItem.addActionListener(this);
 			menu.add(menuItem);
 			
 			menuItem = new JMenuItem(nameDel, KeyEvent.VK_D);
 			menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D,
 					ActionEvent.CTRL_MASK));
-			menuItem.getAccessibleContext().setAccessibleDescription("Delete row");
+			menuItem.getAccessibleContext().setAccessibleDescription(nameDel);
+			menuItem.addActionListener(this);
+			menu.add(menuItem);
+			
+			menuItem = new JMenuItem(namePrint, KeyEvent.VK_P);
+			menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+					ActionEvent.CTRL_MASK));
+			menuItem.getAccessibleContext().setAccessibleDescription(namePrint);
 			menuItem.addActionListener(this);
 			menu.add(menuItem);
 		}
@@ -77,6 +84,9 @@ public class Menu extends JMenuBar implements ActionListener {
 				break;
 			case nameUpdate:
 				item = Item.UPDATE;
+				break;
+			case namePrint:
+				item = Item.PRINT;
 				break;
 			case nameAbout:
 				item = Item.ABOUT;

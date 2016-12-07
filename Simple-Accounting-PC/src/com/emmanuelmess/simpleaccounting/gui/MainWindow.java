@@ -2,22 +2,24 @@ package com.emmanuelmess.simpleaccounting.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableModel;
 
 import com.emmanuelmess.simpleaccounting.Data;
-import com.emmanuelmess.simpleaccounting.Main;
 import com.emmanuelmess.simpleaccounting.gui.components.BalanceTable;
 import com.emmanuelmess.simpleaccounting.gui.components.Item;
 import com.emmanuelmess.simpleaccounting.gui.components.Menu;
 import com.emmanuelmess.simpleaccounting.gui.components.MenuListener;
 import com.emmanuelmess.simpleaccounting.gui.components.Toolbar;
+import com.emmanuelmess.simpleaccounting.print.Print;
 
 public class MainWindow extends JFrame implements MenuListener {
 	
@@ -42,6 +44,7 @@ public class MainWindow extends JFrame implements MenuListener {
         table.getModel().addTableModelListener(new TableModelListener() {	
         	@Override
 	        public void tableChanged(TableModelEvent e) {
+        		System.out.println("Table changed!");
         		/*
 	            int row = e.getFirstRow();
 	            int column = e.getColumn();
@@ -73,7 +76,9 @@ public class MainWindow extends JFrame implements MenuListener {
 		switch(i) {
 		case NEW:
 			System.out.println("New row");
-			table.addRow(new Object []{new Integer(30), "", new Integer(0), new Integer(0), new Integer(0)});
+			Integer day = Integer.valueOf((new SimpleDateFormat("dd")).format(new Date()));
+			table.addRow(new Object []{day, "", new Integer(0), new Integer(0), new Integer(0)});
+			
 			break;
 		case DELETE:
 			if(table.getSelectedRow() != -1) {
@@ -82,6 +87,20 @@ public class MainWindow extends JFrame implements MenuListener {
 			}
 			break;
 		case UPDATE:
+			break;
+		case PRINT:
+			PrinterJob job = PrinterJob.getPrinterJob();
+			job.setPrintable(new Print());
+			if (job.printDialog()) {
+			    try {
+			        job.print();
+			    } catch (PrinterException e) {
+			    	if(e.getMessage() != null)
+			    		JOptionPane.showMessageDialog(this,
+			    				"An error occurred during print: \n" + e.getLocalizedMessage(),
+			    				"Error", JOptionPane.ERROR_MESSAGE);
+			    }
+			}
 			break;
 		case ABOUT:
 			break;

@@ -2,7 +2,6 @@ package com.emmanuelmess.simpleaccounting.gui.components;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;

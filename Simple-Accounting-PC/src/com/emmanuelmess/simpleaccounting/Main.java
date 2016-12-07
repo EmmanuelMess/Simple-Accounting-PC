@@ -13,13 +13,6 @@ public class Main {
 	private static MainWindow window = null;
 	
 	public static void main(String[] args) {		
-		try
-		{
-		   Class.forName("com.mysql.jdbc.Driver");
-		} catch (Exception e) {
-		   e.printStackTrace();
-		}
-		
 		ArrayList<Object[]> data = new ArrayList<>();
 		
 		data.add(new Object []{new Integer(01), "Salary", new Integer(5), new Integer(0), new Integer(5)});
