@@ -103,6 +103,7 @@ public class MainWindow extends JFrame implements MenuListener {
 			}
 			break;
 		case ABOUT:
+			new AboutWindow();
 			break;
 		}
 		

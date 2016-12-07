@@ -57,10 +57,11 @@ public class Menu extends JMenuBar implements ActionListener {
 		menu = new JMenu("Help");
 		menu.setMnemonic(KeyEvent.VK_H);
 		{
+			/*
 			menuItem = new JMenuItem(nameUpdate);		
 			menuItem.addActionListener(this);
 			menu.add(menuItem);
-			
+			*/
 			menuItem = new JMenuItem(nameAbout);
 			menuItem.addActionListener(this);
 			menu.add(menuItem);
