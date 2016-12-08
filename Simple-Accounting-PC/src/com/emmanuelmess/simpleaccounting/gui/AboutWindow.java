@@ -1,12 +1,9 @@
 package com.emmanuelmess.simpleaccounting.gui;
 
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
+
+import com.emmanuelmess.simpleaccounting.Main;
 
 public class AboutWindow  extends JFrame {
 	
@@ -18,7 +15,7 @@ public class AboutWindow  extends JFrame {
 	public AboutWindow() {
 		super("Simple Accounting");
 		setSize(250, 200);
-		JTextArea t = new JTextArea("\n\n\n\nCreated by Emmanuel Messulam");
+		JTextArea t = new JTextArea("\n\n\nCreated by Emmanuel Messulam\n\nVersion: " + Main.VERSION_NAME);
 		add(t);
 		setVisible(true);
 	}

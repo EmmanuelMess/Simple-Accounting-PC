@@ -18,6 +18,7 @@ public class BalanceTable extends JTable {
 
 	public BalanceTable(ArrayList<Object[]> data, String[] columnNames) {
 		super(new BalanceTableModel(columnNames, data));
+		
 	}
 	
 	public void postVisibleActions() {

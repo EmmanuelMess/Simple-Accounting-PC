@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import com.emmanuelmess.simpleaccounting.Data;
+import com.emmanuelmess.simpleaccounting.databases.TableGeneral;
 import com.emmanuelmess.simpleaccounting.gui.components.BalanceTable;
 import com.emmanuelmess.simpleaccounting.gui.components.Item;
 import com.emmanuelmess.simpleaccounting.gui.components.Menu;
@@ -28,12 +30,15 @@ public class MainWindow extends JFrame implements MenuListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private BalanceTable table;
+	private TableGeneral db;
 	
-	public MainWindow(Data<Object> data) {
+	public MainWindow(Data<Object> data, TableGeneral c) {
 		super("Simple Accounting");
 		
 		//System.setProperty("awt.useSystemAAFontSettings","on"); 
 		//System.setProperty("swing.aatext", "true"); 
+		
+		db = c;
 		
 		setSize(new Dimension(500, 300));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,21 +81,26 @@ public class MainWindow extends JFrame implements MenuListener {
 		switch(i) {
 		case NEW:
 			System.out.println("New row");
-			Integer day = Integer.valueOf((new SimpleDateFormat("dd")).format(new Date()));
-			table.addRow(new Object []{day, "", new Integer(0), new Integer(0), new Integer(0)});
 			
+			Date temp = new Date();
+			Integer day = Integer.valueOf((new SimpleDateFormat("dd")).format(temp)),
+					month = Integer.valueOf((new SimpleDateFormat("MM")).format(temp))-1,
+					year = Integer.valueOf((new SimpleDateFormat("YYYY")).format(temp));
+			table.addRow(new Object []{day, "", new Integer(0), new Integer(0), new Integer(0)});
+			db.addNew(day, month, year);
 			break;
 		case DELETE:
 			if(table.getSelectedRow() != -1) {
 				System.out.println("Deleting row: " + table.getSelectedRow());
 				table.deleteRow(table.getSelectedRow());
+				db.delete(table.getSelectedRow());
 			}
 			break;
 		case UPDATE:
 			break;
 		case PRINT:
 			PrinterJob job = PrinterJob.getPrinterJob();
-			job.setPrintable(new Print());
+			job.setPrintable(new Print(db));
 			if (job.printDialog()) {
 			    try {
 			        job.print();
