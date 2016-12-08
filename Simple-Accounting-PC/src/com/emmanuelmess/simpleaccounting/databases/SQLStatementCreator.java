@@ -32,4 +32,14 @@ public class SQLStatementCreator {
 		statement.append(";");
 		return statement.toString();
 	}
+	
+	public static String delete(String table, String check) {
+		StringBuilder statement = new StringBuilder();
+		statement.append("DELETE FROM ");
+		statement.append(table);
+		statement.append(" WHERE ");
+		statement.append(check);
+		statement.append(";");
+		return statement.toString();
+	}
 }

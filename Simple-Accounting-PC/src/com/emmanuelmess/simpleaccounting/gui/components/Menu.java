@@ -15,7 +15,7 @@ public class Menu extends JMenuBar implements ActionListener {
 	
 	protected final String nameNew = "New row";
 	protected final String nameDel = "Delete row";
-	protected final String nameUpdate = "Check for updates";
+	protected final String nameGetUpdates = "Check for updates";
 	protected final String namePrint = "Print...";
 	protected final String nameAbout = "About...";
 	
@@ -83,8 +83,8 @@ public class Menu extends JMenuBar implements ActionListener {
 			case nameDel:
 				item = Item.DELETE;
 				break;
-			case nameUpdate:
-				item = Item.UPDATE;
+			case nameGetUpdates:
+				item = Item.GET_UPDATES;
 				break;
 			case namePrint:
 				item = Item.PRINT;

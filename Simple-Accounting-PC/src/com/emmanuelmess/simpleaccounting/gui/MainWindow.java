@@ -7,12 +7,15 @@ import java.awt.print.PrinterJob;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.IllegalFormatCodePointException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.plaf.basic.BasicComboBoxUI.ComboBoxLayoutManager;
+import javax.swing.table.TableModel;
 
 import com.emmanuelmess.simpleaccounting.Data;
 import com.emmanuelmess.simpleaccounting.databases.TableGeneral;
@@ -22,6 +25,7 @@ import com.emmanuelmess.simpleaccounting.gui.components.Menu;
 import com.emmanuelmess.simpleaccounting.gui.components.MenuListener;
 import com.emmanuelmess.simpleaccounting.gui.components.Toolbar;
 import com.emmanuelmess.simpleaccounting.print.Print;
+import com.mysql.jdbc.RowData;
 
 public class MainWindow extends JFrame implements MenuListener {
 	
@@ -49,14 +53,14 @@ public class MainWindow extends JFrame implements MenuListener {
         table.getModel().addTableModelListener(new TableModelListener() {	
         	@Override
 	        public void tableChanged(TableModelEvent e) {
-        		System.out.println("Table changed!");
-        		/*
 	            int row = e.getFirstRow();
 	            int column = e.getColumn();
-	            TableModel model = (TableModel)e.getSource();
-	            String columnName = model.getColumnName(column);
-	            Object data = model.getValueAt(row, column);
-	            */
+	            System.out.println("Table changed: " + row + "x" + column + "!");
+	            if(row != -1 && column != -1) {
+		            TableModel model = (TableModel)e.getSource();
+		            Object data = model.getValueAt(row, column);
+		            db.update(row, new String[] {TableGeneral.COLUMNS[column]}, new Object[] {data});
+	            }
 	        }
         });
 	
@@ -91,12 +95,13 @@ public class MainWindow extends JFrame implements MenuListener {
 			break;
 		case DELETE:
 			if(table.getSelectedRow() != -1) {
-				System.out.println("Deleting row: " + table.getSelectedRow());
-				table.deleteRow(table.getSelectedRow());
-				db.delete(table.getSelectedRow());
+				int row = table.getSelectedRow();
+				System.out.println("Deleting row: " + row);
+				table.deleteRow(row);
+				db.delete(row);
 			}
 			break;
-		case UPDATE:
+		case GET_UPDATES:
 			break;
 		case PRINT:
 			PrinterJob job = PrinterJob.getPrinterJob();

@@ -1,6 +1,5 @@
 package com.emmanuelmess.simpleaccounting.databases;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,13 +17,11 @@ public class TableGeneral extends Database {
 			" (%2$s INTEGER PRIMARY KEY, %3$s INT, %4$s TEXT, %5$s REAL, %6$s REAL, %7$s INT, %8$s INT)",
 			TABLE_NAME, NUMBER_COLUMN, COLUMNS[0], COLUMNS[1], COLUMNS[2], COLUMNS[3], COLUMNS[4], COLUMNS[5]);
 	
-	private PreparedStatement preparedDel;
 	private String upd;
 
 	public TableGeneral() throws SQLException {
 		super();
 		super.createTable(TABLE_CREATE, con);
-        preparedDel = con.prepareStatement("DELETE FROM " + TABLE_NAME + " WHERE " + NUMBER_COLUMN + " = ?");
         upd = "UPDATE " + TABLE_NAME + " SET %1$s = ? WHERE " + NUMBER_COLUMN + " = ?;";
 	}
 	
@@ -60,12 +57,7 @@ public class TableGeneral extends Database {
 	
 	public void delete(int row) {
 		try (Statement stat = con.createStatement()){	        
-			preparedDel.setInt(1, row);
-	        preparedDel.addBatch();
-	
-	        con.setAutoCommit(false);
-	        preparedDel.executeBatch();
-	        con.setAutoCommit(true);
+			stat.executeUpdate(SQLStatementCreator.delete(TABLE_NAME, NUMBER_COLUMN + "=" + row));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
