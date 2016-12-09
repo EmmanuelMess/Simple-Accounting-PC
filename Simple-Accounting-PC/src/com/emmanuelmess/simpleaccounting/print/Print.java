@@ -11,31 +11,30 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.util.ArrayList;
 
+import com.emmanuelmess.simpleaccounting.databases.ProcessData;
 import com.emmanuelmess.simpleaccounting.databases.TableGeneral;
 
 public class Print implements Printable {
 
 	private final int TOP_MARGIN = 100, MARGIN = 50, SPACE_BETWEEN_LINES = 30;
 	private TableGeneral dbGeneral;
-	private ArrayList<Object[]> data;
+	Object[][] month;
 	private int k = 0;
 	
 	public Print(TableGeneral db) {
 		dbGeneral = db;
 		
-		data = new ArrayList<>();
-		for(Object[] elem : dbGeneral.getMonth(-1,  -1))
-			data.add(new Object[] {elem[0], elem[1], convert(elem[2]), convert(elem[3]), (convert(elem[2]) + convert(elem[3]))});
+		month = ProcessData.digest(db.getMonth(-1,  -1));
 	}
 	
 	@Override
 	public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
 		double pageHeight = pf.getImageableHeight();
-		int amountOfLines = (int) ((pageHeight-TOP_MARGIN*2)/SPACE_BETWEEN_LINES);
+		int linesPerPage = (int) ((pageHeight-TOP_MARGIN*2)/SPACE_BETWEEN_LINES);
 		
 		// We have only one page, and 'page'
 		// is zero-based
-		if (Math.ceil(((float)data.size())/amountOfLines) < page) 
+		if (month.length/linesPerPage < page) 
 		     return NO_SUCH_PAGE;
 		
 		// User (0,0) is typically outside the
@@ -47,9 +46,14 @@ public class Print implements Printable {
 		
 		int[] spacings = printHeader(g2d, (int)(pf.getImageableX() + pf.getImageableWidth()));
 
-		for(int i = 0; i < columnNames.length; i++)  
-			for(int j = 0; k < data.size() && j < amountOfLines; j++, k++) 
-				g.drawString(parseAsString(data.get(k) [i]), spacings [i], TOP_MARGIN + SPACE_BETWEEN_LINES*(j+1));
+		for(int line = 0; line < linesPerPage && k < month.length; line++, k++) {
+			System.out.print("Printing ");
+			for(int i = 0; i < columnNames.length; i++){
+				g.drawString(parseAsString(month[k] [i]), spacings [i], TOP_MARGIN + SPACE_BETWEEN_LINES*(line+1));
+				System.out.print(" '" + parseAsString(month[k] [i]) + "' at (" + spacings [i] + ", " + (TOP_MARGIN + SPACE_BETWEEN_LINES*(line+1)) + ") &");
+			}
+			System.out.println("\n");
+		}
 
 		return PAGE_EXISTS;
 	}

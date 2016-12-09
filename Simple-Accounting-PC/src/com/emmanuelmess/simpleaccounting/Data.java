@@ -1,11 +1,9 @@
 package com.emmanuelmess.simpleaccounting;
 
-import java.util.ArrayList;
-
 public class Data<T> {
 	
 	String[] columnNames;
-	ArrayList<T[]> data;
+	T[][] data;
 	
 	public void setColumNames(String[] columnNames) {
 		this.columnNames = columnNames;
@@ -15,11 +13,11 @@ public class Data<T> {
 		return columnNames;
 	}
 	
-	public void setData(ArrayList<T[]> data) {
+	public void setData(T[][] data) {
 		this.data = data;
 	}
 	
-	public ArrayList<T[]> getData() {
+	public T[][] getData() {
 		return data;
 	}
 }
