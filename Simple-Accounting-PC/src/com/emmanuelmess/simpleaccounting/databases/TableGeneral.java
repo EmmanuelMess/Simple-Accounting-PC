@@ -1,6 +1,5 @@
 package com.emmanuelmess.simpleaccounting.databases;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 public class TableGeneral extends Database {
 	
 	public static final String[] COLUMNS = new String[] { "DATE", "REFERENCE", "CREDIT", "DEBT", "MONTH", "YEAR"};
-	public static final String NUMBER_COLUMN = "ID";
+	public static final String NUMBER_COLUMN = "ID";//STARTS IN 1
 
 	private static final int DATABASE_VERSION = 1;
 	private static final String TABLE_NAME = "ACCOUNTING";
@@ -17,19 +16,16 @@ public class TableGeneral extends Database {
 			" (%2$s INTEGER PRIMARY KEY, %3$s INT, %4$s TEXT, %5$s REAL, %6$s REAL, %7$s INT, %8$s INT)",
 			TABLE_NAME, NUMBER_COLUMN, COLUMNS[0], COLUMNS[1], COLUMNS[2], COLUMNS[3], COLUMNS[4], COLUMNS[5]);
 	
-	private String upd;
-
 	public TableGeneral() throws SQLException {
 		super();
 		super.createTable(TABLE_CREATE, con);
-        upd = "UPDATE " + TABLE_NAME + " SET %1$s = ? WHERE " + NUMBER_COLUMN + " = ?;";
 	}
 	
 	public void addNew(int date, int month, int year) {
 		try (Statement stat = con.createStatement()) {
-			stat.executeUpdate(SQLStatementCreator.insert(TABLE_NAME,
-					new String[] {COLUMNS[0], COLUMNS[4], COLUMNS[5]} , 
-					new Object[]{new Integer(date), new Integer(month), new Integer(year)}));
+			stat.executeUpdate(SQLStatementCreator.insert(TABLE_NAME, COLUMNS, 
+					new Object[]{new Integer(date), new String(""), new Double(0d), 
+							new Double(0d), new Integer(month), new Integer(year)}));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -39,17 +35,14 @@ public class TableGeneral extends Database {
 		if(columns.length != data.length)
 			throw new IllegalArgumentException();
 		
+		System.out.println("Updated columns in row " + row + ":");
+		for(String c : columns)
+			System.out.print(c + " ");
+		for(Object d : data)
+			System.out.println(d.toString());
+		
 		try (Statement stat = con.createStatement()){	    
-			for(int i = 0; i < columns.length; i++) {
-				PreparedStatement preparedUpd = con.prepareStatement(String.format(upd, columns[i]));
-				preparedUpd.setObject(1, data[i]);
-				preparedUpd.setInt(2, row);
-				preparedUpd.addBatch();
-				
-		        con.setAutoCommit(false);
-		        preparedUpd.executeBatch();
-		        con.setAutoCommit(true);
-			}
+			stat.executeUpdate(SQLStatementCreator.update(TABLE_NAME, columns, data, NUMBER_COLUMN + "=" + (row+1)));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -57,7 +50,7 @@ public class TableGeneral extends Database {
 	
 	public void delete(int row) {
 		try (Statement stat = con.createStatement()){	        
-			stat.executeUpdate(SQLStatementCreator.delete(TABLE_NAME, NUMBER_COLUMN + "=" + row));
+			stat.executeUpdate(SQLStatementCreator.delete(TABLE_NAME, NUMBER_COLUMN + "=" + (row+1)));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -78,6 +71,12 @@ public class TableGeneral extends Database {
 			}
 			
 			System.out.println("Feched month: " + year + "-" + month);
+			for(Object[] d : data) {
+				for(Object o : d)
+					System.out.print("'" + (o != null? o.toString() : null) + "'" + " ");
+				System.out.print("\n");
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

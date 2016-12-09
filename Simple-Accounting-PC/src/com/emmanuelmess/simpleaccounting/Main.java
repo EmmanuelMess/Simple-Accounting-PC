@@ -1,12 +1,12 @@
 package com.emmanuelmess.simpleaccounting;
 
+import static com.emmanuelmess.simpleaccounting.Utils.convert;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.emmanuelmess.simpleaccounting.databases.TableGeneral;
 import com.emmanuelmess.simpleaccounting.gui.MainWindow;
-
-import static com.emmanuelmess.simpleaccounting.Utils.convert;
 
 public class Main {
 
@@ -31,7 +31,10 @@ public class Main {
 		Object[][] month = db.getMonth(-1,  -1);
 		for(int i = 0; i < month.length; i++) {
 			Object[] elem = month[i];
-			data.add(new Object[] {elem[0], elem[1], convert(elem[2]), convert(elem[3]), ((i > 0? convert(data.get(i-1)[4]) : 0) + convert(elem[2]) - convert(elem[3]))});
+			Double prevBalance = i > 0? Double.parseDouble(((String) data.get(i-1)[4]).substring(2)) : 0;
+			
+			data.add(new Object[] {elem[0], elem[1], convert(elem[2]), convert(elem[3]), 
+					"$ " + (prevBalance + convert(elem[2]) - convert(elem[3]))});
 		}
 		
 		Data<Object> d = new Data<>();

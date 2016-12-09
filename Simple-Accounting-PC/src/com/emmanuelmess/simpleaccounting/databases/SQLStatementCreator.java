@@ -15,9 +15,10 @@ public class SQLStatementCreator {
 		statement.delete(statement.lastIndexOf(", "), statement.length());
 		statement.append(") VALUES (");
 		for (Object elem : data) 
-			statement.append(elem + ", ");
+			statement.append(c(elem) + ", ");
 		statement.delete(statement.lastIndexOf(", "), statement.length());
 		statement.append(");");
+		System.out.println(statement.toString());
 		return statement.toString();
 	}
 	
@@ -30,6 +31,8 @@ public class SQLStatementCreator {
 		statement.append(" FROM ");
 		statement.append(table);
 		statement.append(";");
+		System.out.println(statement.toString());
+
 		return statement.toString();
 	}
 	
@@ -40,6 +43,35 @@ public class SQLStatementCreator {
 		statement.append(" WHERE ");
 		statement.append(check);
 		statement.append(";");
+		System.out.println(statement.toString());
+
 		return statement.toString();
+	}
+	
+	public static String update(String table, String[] columns, Object[] data, String check) {
+		if(columns.length != data.length)
+			throw new IllegalArgumentException();
+		
+		StringBuilder statement = new StringBuilder();
+		statement.append("UPDATE ");
+		statement.append(table);
+		statement.append(" SET ");
+		for(int i = 0; i < columns.length; i++)
+			statement.append(columns[i] + "=" + c(data[i]) + ", ");
+		statement.delete(statement.lastIndexOf(", "), statement.length());
+		statement.append(" WHERE ");
+		statement.append(check);
+		statement.append(";");
+		System.out.println(statement.toString());
+
+		return statement.toString();
+	}
+	
+	private static Object c(Object s) {
+		if(s instanceof String) {
+			return "'" + s + "'";
+		}
+		
+		return s;
 	}
 }

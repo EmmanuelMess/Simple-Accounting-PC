@@ -4,17 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.sql.Connection;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.IllegalFormatCodePointException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.plaf.basic.BasicComboBoxUI.ComboBoxLayoutManager;
 import javax.swing.table.TableModel;
 
 import com.emmanuelmess.simpleaccounting.Data;
@@ -25,7 +23,6 @@ import com.emmanuelmess.simpleaccounting.gui.components.Menu;
 import com.emmanuelmess.simpleaccounting.gui.components.MenuListener;
 import com.emmanuelmess.simpleaccounting.gui.components.Toolbar;
 import com.emmanuelmess.simpleaccounting.print.Print;
-import com.mysql.jdbc.RowData;
 
 public class MainWindow extends JFrame implements MenuListener {
 	
@@ -56,10 +53,13 @@ public class MainWindow extends JFrame implements MenuListener {
 	            int row = e.getFirstRow();
 	            int column = e.getColumn();
 	            System.out.println("Table changed: " + row + "x" + column + "!");
-	            if(row != -1 && column != -1) {
+	            if(row != -1 && column != -1 && column != 4) {
 		            TableModel model = (TableModel)e.getSource();
 		            Object data = model.getValueAt(row, column);
 		            db.update(row, new String[] {TableGeneral.COLUMNS[column]}, new Object[] {data});
+		            
+		            if(column == 2 || column == 3) 
+		            	recalculateBalance(row);
 	            }
 	        }
         });
@@ -80,6 +80,20 @@ public class MainWindow extends JFrame implements MenuListener {
 		table.postVisibleActions();
 	}
 
+	private void recalculateBalance(int row) {
+		TableModel model = table.getModel();
+		
+    	BigDecimal balance = new BigDecimal(0);
+    	if(row != 0) 
+    		balance = balance.add(new BigDecimal(((String) model.getValueAt(row-1, 4)).substring(2)));
+    	balance = balance.add(new BigDecimal((Double) model.getValueAt(row, 2)));
+    	balance = balance.subtract(new BigDecimal((Double) model.getValueAt(row, 3)));
+    	model.setValueAt("$ " + balance.toPlainString(), row, 4);
+    	
+    	if(model.getRowCount() > row+1)
+    		recalculateBalance(row+1);
+	}
+	
 	@Override
 	public void onClick(Item i) {
 		switch(i) {
@@ -90,8 +104,10 @@ public class MainWindow extends JFrame implements MenuListener {
 			Integer day = Integer.valueOf((new SimpleDateFormat("dd")).format(temp)),
 					month = Integer.valueOf((new SimpleDateFormat("MM")).format(temp))-1,
 					year = Integer.valueOf((new SimpleDateFormat("YYYY")).format(temp));
-			table.addRow(new Object []{day, "", new Integer(0), new Integer(0), new Integer(0)});
+			table.addRow(new Object []{day, "", new Double(0.0d), new Double(0.0d), "$ 0.0"});
+			TableModel model = table.getModel();
 			db.addNew(day, month, year);
+			recalculateBalance(model.getRowCount()-1);
 			break;
 		case DELETE:
 			if(table.getSelectedRow() != -1) {

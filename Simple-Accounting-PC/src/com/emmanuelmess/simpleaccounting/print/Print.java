@@ -1,5 +1,8 @@
 package com.emmanuelmess.simpleaccounting.print;
 
+import static com.emmanuelmess.simpleaccounting.Main.columnNames;
+import static com.emmanuelmess.simpleaccounting.Utils.convert;
+
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -9,9 +12,6 @@ import java.awt.print.PrinterException;
 import java.util.ArrayList;
 
 import com.emmanuelmess.simpleaccounting.databases.TableGeneral;
-
-import static com.emmanuelmess.simpleaccounting.Main.columnNames;
-import static com.emmanuelmess.simpleaccounting.Utils.convert;
 
 public class Print implements Printable {
 
