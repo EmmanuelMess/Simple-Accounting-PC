@@ -28,9 +28,12 @@ public class Main {
 			e1.printStackTrace();
 		}
 		
-		for(Object[] elem : db.getMonth(-1,  -1))
-			data.add(new Object[] {elem[0], elem[1], convert(elem[2]), convert(elem[3]), (convert(elem[2]) + convert(elem[3]))});
-
+		Object[][] month = db.getMonth(-1,  -1);
+		for(int i = 0; i < month.length; i++) {
+			Object[] elem = month[i];
+			data.add(new Object[] {elem[0], elem[1], convert(elem[2]), convert(elem[3]), ((i > 0? convert(data.get(i-1)[4]) : 0) + convert(elem[2]) - convert(elem[3]))});
+		}
+		
 		Data<Object> d = new Data<>();
 		d.setData(data);
 		d.setColumNames(columnNames);
