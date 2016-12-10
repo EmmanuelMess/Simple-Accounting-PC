@@ -14,7 +14,7 @@ public class ProcessData {
 			Object[] elem = month[i];
 			Double prevBalance = i > 0? Double.parseDouble(((String) data.get(i-1)[4]).substring(2)) : 0;
 			
-			data.add(new Object[] {elem[0], elem[1], convert(elem[2]), convert(elem[3]), 
+			data.add(new Object[] {String.format("%02d", elem[0]), elem[1], convert(elem[2]), convert(elem[3]), 
 					"$ " + (prevBalance + convert(elem[2]) - convert(elem[3]))});
 		}
 		

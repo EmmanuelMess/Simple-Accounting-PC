@@ -36,14 +36,12 @@ public class MainWindow extends JFrame implements MenuListener {
 	public MainWindow(Data<Object> data, TableGeneral c) {
 		super("Simple Accounting");
 		
-		//System.setProperty("awt.useSystemAAFontSettings","on"); 
-		//System.setProperty("swing.aatext", "true"); 
-		
 		db = c;
 		
 		setSize(new Dimension(500, 300));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setResizable(false);
+		setResizable(true);
+		setLocationRelativeTo(null);//Centers
 		
 		table = new BalanceTable(data.getData(), data.getColumnNames());
 
@@ -104,7 +102,7 @@ public class MainWindow extends JFrame implements MenuListener {
 			Integer day = Integer.valueOf((new SimpleDateFormat("dd")).format(temp)),
 					month = Integer.valueOf((new SimpleDateFormat("MM")).format(temp))-1,
 					year = Integer.valueOf((new SimpleDateFormat("YYYY")).format(temp));
-			table.addRow(new Object []{day, "", new Double(0.0d), new Double(0.0d), "$ 0.0"});
+			table.addRow(new Object []{String.format("%02d", day), "", new Double(0.0d), new Double(0.0d), "$ 0.0"});
 			TableModel model = table.getModel();
 			db.addNew(day, month, year);
 			recalculateBalance(model.getRowCount()-1);
