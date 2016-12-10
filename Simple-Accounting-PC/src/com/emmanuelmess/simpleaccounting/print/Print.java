@@ -1,7 +1,6 @@
 package com.emmanuelmess.simpleaccounting.print;
 
 import static com.emmanuelmess.simpleaccounting.Main.columnNames;
-import static com.emmanuelmess.simpleaccounting.Utils.convert;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -9,9 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
-import java.util.ArrayList;
 
-import com.emmanuelmess.simpleaccounting.Data;
 import com.emmanuelmess.simpleaccounting.databases.ProcessData;
 import com.emmanuelmess.simpleaccounting.databases.TableGeneral;
 
@@ -21,12 +18,9 @@ public class Print implements Printable {
 						TOP_MARGIN = 100,
 						MARGIN = 50, 
 						SPACE_BETWEEN_LINES = 30;
-	private TableGeneral dbGeneral;
 	Object[][] month;
 	
 	public Print(TableGeneral db) {
-		dbGeneral = db;
-		
 		month = ProcessData.digest(db.getMonth(-1,  -1));
 	}
 	

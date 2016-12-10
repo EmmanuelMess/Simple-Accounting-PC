@@ -26,9 +26,6 @@ import com.emmanuelmess.simpleaccounting.print.Print;
 
 public class MainWindow extends JFrame implements MenuListener {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private BalanceTable table;
 	private TableGeneral db;
@@ -61,13 +58,10 @@ public class MainWindow extends JFrame implements MenuListener {
 	            }
 	        }
         });
-	
-        Menu m = new Menu(this);
-        
-        setJMenuBar(m);
+	        
+        setJMenuBar(new Menu(this));
         
         setLayout(new BorderLayout());
-		
 		add(new Toolbar(this), BorderLayout.PAGE_START);
 		
 		JScrollPane p1 = new JScrollPane(table);

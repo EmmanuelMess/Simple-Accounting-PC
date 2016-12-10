@@ -2,8 +2,6 @@ package com.emmanuelmess.simpleaccounting.gui.components;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -92,7 +90,7 @@ class BalanceTableModel extends AbstractTableModel {
         return data.get(row)[col];
     }
 
-    public Class getColumnClass(int c) {
+    public Class<?> getColumnClass(int c) {
         return getValueAt(0, c).getClass();
     }
 

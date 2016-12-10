@@ -12,9 +12,7 @@ public class Main {
 	public static final String VERSION_NAME = "0.0.1 alpha";
 
 	public final static String[] columnNames = {"Date", "Reference", "Credit", "Debit", "Balance"};
-	
-	private static MainWindow window = null;
-	
+		
 	public static void main(String[] args) {
 		TableGeneral db = null;
 		
@@ -31,7 +29,7 @@ public class Main {
 		d.setData(month);
 		d.setColumNames(columnNames);
 		
-		window = new MainWindow(d, db);
+		new MainWindow(d, db);
 	}
 	
 }

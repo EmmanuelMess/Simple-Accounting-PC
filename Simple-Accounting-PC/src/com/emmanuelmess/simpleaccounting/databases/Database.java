@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public abstract class Database {
 	
-	private static final String USER_NAME = "admin", PASSWORD = "pass", SEVER_NAME = "localhost", PORT_NUM = "3306", DB_NAME = "data";
+	private static final String DB_NAME = "data";
 	
 	protected Connection con;
 	

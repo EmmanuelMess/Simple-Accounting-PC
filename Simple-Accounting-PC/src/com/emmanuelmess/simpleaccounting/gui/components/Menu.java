@@ -11,6 +11,8 @@ import javax.swing.KeyStroke;
 
 public class Menu extends JMenuBar implements ActionListener {	
 	
+	private static final long serialVersionUID = 1L;
+
 	MenuListener listener;
 	
 	protected final String nameNew = "New row";

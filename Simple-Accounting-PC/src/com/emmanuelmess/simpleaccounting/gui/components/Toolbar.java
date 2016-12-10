@@ -7,7 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 public class Toolbar extends JToolBar implements ActionListener {
-    
+
+	private static final long serialVersionUID = 1L;
 	private final String nameNew = " + ", nameDel = " - ", namePrint = "Print";
 	private MenuListener listener;
 	
