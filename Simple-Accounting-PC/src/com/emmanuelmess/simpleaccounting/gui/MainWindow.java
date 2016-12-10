@@ -16,6 +16,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import com.emmanuelmess.simpleaccounting.Data;
+import com.emmanuelmess.simpleaccounting.Utils;
 import com.emmanuelmess.simpleaccounting.databases.TableGeneral;
 import com.emmanuelmess.simpleaccounting.gui.components.BalanceTable;
 import com.emmanuelmess.simpleaccounting.gui.components.Item;
@@ -49,12 +50,17 @@ public class MainWindow extends JFrame implements MenuListener {
 	            int column = e.getColumn();
 	            System.out.println("Table changed: " + row + "x" + column + "!");
 	            if(row != -1 && column != -1 && column != 4) {
-		            TableModel model = (TableModel)e.getSource();
+		            BalanceTable.BalanceTableModel model = (BalanceTable.BalanceTableModel)e.getSource();
 		            Object data = model.getValueAt(row, column);
-		            db.update(row, new String[] {TableGeneral.COLUMNS[column]}, new Object[] {data});
+		            db.update(row, new String[] {TableGeneral.COLUMNS[column]}, 
+		            		new Object[] {(column == 2 || column == 3? Utils.unformat(data.toString()) : data)});
 		            
-		            if(column == 2 || column == 3) 
+		            if(column == 2 || column == 3) {
+		            	String s = Utils.format(data);
+		            	if(s != data)
+		            		model.setValueAt(s, row, column, false);
 		            	recalculateBalance(row);
+		            }
 	            }
 	        }
         });
@@ -75,12 +81,13 @@ public class MainWindow extends JFrame implements MenuListener {
 	private void recalculateBalance(int row) {
 		TableModel model = table.getModel();
 		
-    	BigDecimal balance = new BigDecimal(0);
+    	BigDecimal balance = BigDecimal.ZERO;
     	if(row != 0) 
-    		balance = balance.add(new BigDecimal(((String) model.getValueAt(row-1, 4)).substring(2)));
-    	balance = balance.add(new BigDecimal((Double) model.getValueAt(row, 2)));
-    	balance = balance.subtract(new BigDecimal((Double) model.getValueAt(row, 3)));
-    	model.setValueAt("$ " + balance.toPlainString(), row, 4);
+    		balance = balance.add(new BigDecimal(Utils.unformat(((String) model.getValueAt(row-1, 4)).substring(2))));
+    	
+    	balance = balance.add(new BigDecimal(Utils.unformat((String) model.getValueAt(row, 2))))
+    					.subtract(new BigDecimal(Utils.unformat((String) model.getValueAt(row, 3))));
+    	model.setValueAt("$ " + Utils.format(balance), row, 4);
     	
     	if(model.getRowCount() > row+1)
     		recalculateBalance(row+1);

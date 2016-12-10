@@ -32,6 +32,10 @@ public class BalanceTable extends JTable {
     public void deleteRow(int row) {
     	((BalanceTableModel) getModel()).deleteRow(row);
     }
+    
+    public BalanceTableModel getModel() {
+		return (BalanceTableModel) super.getModel();
+    }
 	
 	private void centerCells() {
 		setPreferredScrollableViewportSize(new Dimension(500, 70));
@@ -59,60 +63,65 @@ public class BalanceTable extends JTable {
 	    }
 	}
 	
-}
+	public static class BalanceTableModel extends AbstractTableModel {
+		
+		private static final long serialVersionUID = 1L;
+		private String[] columnNames;
+	    private ArrayList<Object[]> data;
+	    
+	    BalanceTableModel(String[] col, Object[][] d) {
+	    	this.columnNames = col;
+	    	this.data = new ArrayList<>();
+	    	for(Object[] o : d)
+	    		data.add(o);
+	    }
 
-class BalanceTableModel extends AbstractTableModel {
+	    public int getColumnCount() {
+	        return columnNames.length;
+	    }
+
+	    public int getRowCount() {
+	        return data.size();
+	    }
+
+	    public String getColumnName(int col) {
+	        return columnNames[col];
+	    }
+
+	    public Object getValueAt(int row, int col) {
+	        return data.get(row)[col];
+	    }
+
+	    public Class<?> getColumnClass(int c) {
+	        return getValueAt(0, c).getClass();
+	    }
+
+	    public boolean isCellEditable(int row, int col) {
+	        //Note that the data/cell address is constant,
+	        //no matter where the cell appears onscreen.
+	        return !(col == 4);
+
+	    }
+
+	    public void setValueAt(Object value, int row, int col) {
+	    	setValueAt(value, row, col, true);
+	    }
+	    
+	    public void setValueAt(Object value, int row, int col, boolean fire) {
+	        data.get(row)[col] = value;
+	        if(fire) fireTableCellUpdated(row, col);
+	    }
+	    
+	    public void addRow(Object[] row) {
+	    	data.add(row);
+	    	fireTableDataChanged();
+	    }
+	    
+	    public void deleteRow(int row) {
+	    	data.remove(row);
+	    	fireTableDataChanged();
+	    }
+	}
+
 	
-	private static final long serialVersionUID = 1L;
-	private String[] columnNames;
-    private ArrayList<Object[]> data;
-    
-    BalanceTableModel(String[] col, Object[][] d) {
-    	this.columnNames = col;
-    	this.data = new ArrayList<>();
-    	for(Object[] o : d)
-    		data.add(o);
-    }
-
-    public int getColumnCount() {
-        return columnNames.length;
-    }
-
-    public int getRowCount() {
-        return data.size();
-    }
-
-    public String getColumnName(int col) {
-        return columnNames[col];
-    }
-
-    public Object getValueAt(int row, int col) {
-        return data.get(row)[col];
-    }
-
-    public Class<?> getColumnClass(int c) {
-        return getValueAt(0, c).getClass();
-    }
-
-    public boolean isCellEditable(int row, int col) {
-        //Note that the data/cell address is constant,
-        //no matter where the cell appears onscreen.
-        return !(col == 4);
-
-    }
-
-    public void setValueAt(Object value, int row, int col) {
-        data.get(row)[col] = value;
-        fireTableCellUpdated(row, col);
-    }
-    
-    public void addRow(Object[] row) {
-    	data.add(row);
-    	fireTableDataChanged();
-    }
-    
-    public void deleteRow(int row) {
-    	data.remove(row);
-    	fireTableDataChanged();
-    }
 }
