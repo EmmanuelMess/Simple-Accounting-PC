@@ -19,6 +19,7 @@ import com.emmanuelmess.simpleaccounting.Data;
 import com.emmanuelmess.simpleaccounting.Utils;
 import com.emmanuelmess.simpleaccounting.databases.TableGeneral;
 import com.emmanuelmess.simpleaccounting.gui.components.BalanceTable;
+import com.emmanuelmess.simpleaccounting.gui.components.BalanceTable.BalanceTableModel;
 import com.emmanuelmess.simpleaccounting.gui.components.Item;
 import com.emmanuelmess.simpleaccounting.gui.components.Menu;
 import com.emmanuelmess.simpleaccounting.gui.components.MenuListener;
@@ -83,10 +84,10 @@ public class MainWindow extends JFrame implements MenuListener {
 		
     	BigDecimal balance = BigDecimal.ZERO;
     	if(row != 0) 
-    		balance = balance.add(new BigDecimal(Utils.unformat(((String) model.getValueAt(row-1, 4)).substring(2))));
+    		balance = balance.add(new BigDecimal(Utils.unformat((model.getValueAt(row-1, 4).toString()).substring(2))));
     	
-    	balance = balance.add(new BigDecimal(Utils.unformat((String) model.getValueAt(row, 2))))
-    					.subtract(new BigDecimal(Utils.unformat((String) model.getValueAt(row, 3))));
+    	balance = balance.add(new BigDecimal(Utils.unformat(model.getValueAt(row, 2).toString())))
+    					.subtract(new BigDecimal(Utils.unformat(model.getValueAt(row, 3).toString())));
     	model.setValueAt("$ " + Utils.format(balance), row, 4);
     	
     	if(model.getRowCount() > row+1)
@@ -99,21 +100,29 @@ public class MainWindow extends JFrame implements MenuListener {
 		case NEW:
 			System.out.println("New row");
 			
+			BalanceTableModel model = table.getModel();
 			Date temp = new Date();
 			Integer day = Integer.valueOf((new SimpleDateFormat("dd")).format(temp)),
 					month = Integer.valueOf((new SimpleDateFormat("MM")).format(temp))-1,
 					year = Integer.valueOf((new SimpleDateFormat("YYYY")).format(temp));
-			table.addRow(new Object []{String.format("%02d", day), "", new Double(0.0d), new Double(0.0d), "$ 0.0"});
-			TableModel model = table.getModel();
+			
+			model.addRow(new Object []{String.format("%02d", day), "", Utils.format(new Double(0.0d)), Utils.format(new Double(0.0d)),  "$ " + Utils.format("0.0")});
 			db.addNew(day, month, year);
 			recalculateBalance(model.getRowCount()-1);
 			break;
 		case DELETE:
 			if(table.getSelectedRow() != -1) {
-				int row = table.getSelectedRow();
-				System.out.println("Deleting row: " + row);
-				table.deleteRow(row);
-				db.delete(row);
+				int[] rows = table.getSelectedRows();
+				
+				for(int row : rows) {
+					System.out.println("Deleting row: " + row);
+					db.delete(row);
+				}
+				
+				if(table.getSelectedRows().length > 1) 
+					table.getModel().deleteRow(rows[0], rows[table.getSelectedRows().length-1]+1);
+				 else 
+					table.getModel().deleteRow(table.getSelectedRow());
 			}
 			break;
 		case GET_UPDATES:

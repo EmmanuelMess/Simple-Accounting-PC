@@ -24,14 +24,6 @@ public class BalanceTable extends JTable {
 		centerCells();
 		resizeColumns();
 	}
-	
-    public void addRow(Object[] row) {
-    	((BalanceTableModel) getModel()).addRow(row);
-    }
-    
-    public void deleteRow(int row) {
-    	((BalanceTableModel) getModel()).deleteRow(row);
-    }
     
     public BalanceTableModel getModel() {
 		return (BalanceTableModel) super.getModel();
@@ -114,6 +106,15 @@ public class BalanceTable extends JTable {
 	    
 	    public void addRow(Object[] row) {
 	    	data.add(row);
+	    	fireTableDataChanged();
+	    }
+	    
+	    /*
+	     * rowStart inclusive
+	     * rowFinish not inclusive
+	     */
+	    public void deleteRow(int rowStart, int rowFinish) {
+	    	data.subList(rowStart, rowFinish).clear();
 	    	fireTableDataChanged();
 	    }
 	    

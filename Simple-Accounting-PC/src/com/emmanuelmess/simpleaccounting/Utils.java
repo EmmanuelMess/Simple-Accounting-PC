@@ -33,7 +33,7 @@ public class Utils {
 	}
 	
 	public static Double unformat(String data) {
-		if(data.length() - data.lastIndexOf(decimalSeparator()) > 2)
+		if(data.contains(String.valueOf(decimalSeparator())) && data.length() - data.lastIndexOf(decimalSeparator()) > 2)
 			data = data.substring(0, data.lastIndexOf(decimalSeparator()));
 		
 		NumberFormat format = NumberFormat.getInstance();
