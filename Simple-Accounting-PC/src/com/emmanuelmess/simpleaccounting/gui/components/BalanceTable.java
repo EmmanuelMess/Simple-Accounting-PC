@@ -113,7 +113,7 @@ public class BalanceTable extends JTable {
 	     * rowStart inclusive
 	     * rowFinish not inclusive
 	     */
-	    public void deleteRow(int rowStart, int rowFinish) {
+	    public void deleteRows(int rowStart, int rowFinish) {
 	    	data.subList(rowStart, rowFinish).clear();
 	    	fireTableDataChanged();
 	    }

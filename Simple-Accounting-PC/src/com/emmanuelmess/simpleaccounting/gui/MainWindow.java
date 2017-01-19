@@ -41,7 +41,15 @@ public class MainWindow extends JFrame implements MenuListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);//Centers
-		
+		      
+		addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                db.close();
+                System.exit(0);
+            }
+        });
+		        
 		table = new BalanceTable(data.getData(), data.getColumnNames());
 
         table.getModel().addTableModelListener(new TableModelListener() {	
@@ -65,6 +73,8 @@ public class MainWindow extends JFrame implements MenuListener {
 	            }
 	        }
         });
+        
+
 	        
         setJMenuBar(new Menu(this));
         
@@ -106,21 +116,23 @@ public class MainWindow extends JFrame implements MenuListener {
 					month = Integer.valueOf((new SimpleDateFormat("MM")).format(temp))-1,
 					year = Integer.valueOf((new SimpleDateFormat("YYYY")).format(temp));
 			
-			model.addRow(new Object []{String.format("%02d", day), "", Utils.format(new Double(0.0d)), Utils.format(new Double(0.0d)),  "$ " + Utils.format("0.0")});
+			String formattedZero = Utils.format("0.0");
+			
+			model.addRow(new Object []{String.format("%02d", day), "", formattedZero, formattedZero,  "$ " + formattedZero});
 			db.addNew(day, month, year);
 			recalculateBalance(model.getRowCount()-1);
 			break;
 		case DELETE:
 			if(table.getSelectedRow() != -1) {
 				int[] rows = table.getSelectedRows();
+				int startRow = table.getSelectedRow(), 
+						lastRow = table.getSelectedRows() [rows.length-1];
 				
-				for(int row : rows) {
-					System.out.println("Deleting row: " + row);
-					db.delete(row);
-				}
+				System.out.println("Deleting rows inclusively between: " + startRow + " AND " + lastRow);
+				db.delete(startRow, lastRow);
 				
 				if(table.getSelectedRows().length > 1) 
-					table.getModel().deleteRow(rows[0], rows[table.getSelectedRows().length-1]+1);
+					table.getModel().deleteRows(startRow, lastRow+1);
 				 else 
 					table.getModel().deleteRow(table.getSelectedRow());
 			}

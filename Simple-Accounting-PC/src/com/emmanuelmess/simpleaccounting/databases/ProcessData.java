@@ -9,6 +9,7 @@ import com.emmanuelmess.simpleaccounting.Main;
 import com.emmanuelmess.simpleaccounting.Utils;
 
 public class ProcessData {
+	
 	public static Object[][] digest(Object[][] month) {
 		ArrayList<Object[]> data = new ArrayList<>();
     	BigDecimal balance = BigDecimal.ZERO;
@@ -27,4 +28,5 @@ public class ProcessData {
 		
 		return data.toArray(new Object[data.size()][Main.columnNames.length]);
 	}
+	
 }

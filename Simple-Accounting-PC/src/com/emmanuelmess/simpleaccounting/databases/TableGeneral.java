@@ -57,6 +57,18 @@ public class TableGeneral extends Database {
 	}
 	
 	/*
+	 * Inclusive
+	 * [rowStart, rowEnd]
+	 */
+	public void delete(int rowStart, int rowEnd) {
+		try (Statement stat = con.createStatement()){	        
+			stat.executeUpdate(SQLStatementCreator.delete(TABLE_NAME, NUMBER_COLUMN + " BETWEEN " + (rowStart+1) + " AND " + (rowEnd+1)));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
 	 * month and year are NOT used
 	 */
 	public Object[][] getMonth(int month, int year) {
@@ -82,6 +94,14 @@ public class TableGeneral extends Database {
 		}
 		
 		return data.toArray(new Object[data.size()][3]);
+	}
+	
+	public void close() {
+		try {
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
