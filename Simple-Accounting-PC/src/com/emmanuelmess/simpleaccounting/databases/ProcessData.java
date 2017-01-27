@@ -26,7 +26,7 @@ public class ProcessData {
 					"$ " + Utils.format(balance)});
 		}
 		
-		return data.toArray(new Object[data.size()][Main.columnNames.length]);
+		return data.toArray(new Object[data.size()][Main.COLUMNS.length]);
 	}
 	
 }

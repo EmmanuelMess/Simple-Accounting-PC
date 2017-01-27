@@ -99,7 +99,7 @@ public class Menu extends JMenuBar implements ActionListener {
 			}
 			
 			
-			listener.onClick(item);
+			listener.onButtonClick(item);
 		}
 	}
 	

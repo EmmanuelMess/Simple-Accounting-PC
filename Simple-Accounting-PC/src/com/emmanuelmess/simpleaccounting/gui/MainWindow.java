@@ -16,6 +16,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import com.emmanuelmess.simpleaccounting.Data;
+import com.emmanuelmess.simpleaccounting.Main;
 import com.emmanuelmess.simpleaccounting.Utils;
 import com.emmanuelmess.simpleaccounting.databases.TableGeneral;
 import com.emmanuelmess.simpleaccounting.gui.components.BalanceTable;
@@ -105,7 +106,7 @@ public class MainWindow extends JFrame implements MenuListener {
 	}
 	
 	@Override
-	public void onClick(Item i) {
+	public void onButtonClick(Item i) {
 		switch(i) {
 		case NEW:
 			System.out.println("New row");
@@ -158,5 +159,10 @@ public class MainWindow extends JFrame implements MenuListener {
 			break;
 		}
 		
+	}
+
+	@Override
+	public void onComboBoxClick(int month, int year) {
+		System.out.println("Loading month: " + Main.MONTHS[month] + "-" + year);
 	}
 }

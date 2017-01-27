@@ -2,6 +2,7 @@ package com.emmanuelmess.simpleaccounting.gui.components;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -17,7 +18,6 @@ public class BalanceTable extends JTable {
 
 	public BalanceTable(Object[][] data, String[] columnNames) {
 		super(new BalanceTableModel(columnNames, data));
-		
 	}
 	
 	public void postVisibleActions() {
@@ -34,7 +34,7 @@ public class BalanceTable extends JTable {
         setFillsViewportHeight(true);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for(int x = 0; x < Main.columnNames.length; x++) {
+        for(int x = 0; x < Main.COLUMNS.length; x++) {
         	if(x == 1) continue;
         	getColumnModel().getColumn(x).setCellRenderer(centerRenderer);
         }
@@ -89,8 +89,7 @@ public class BalanceTable extends JTable {
 	    }
 
 	    public boolean isCellEditable(int row, int col) {
-	        //Note that the data/cell address is constant,
-	        //no matter where the cell appears onscreen.
+	        //Note that the data/cell address is constant, no matter where the cell appears onscreen.
 	        return !(col == 4);
 
 	    }

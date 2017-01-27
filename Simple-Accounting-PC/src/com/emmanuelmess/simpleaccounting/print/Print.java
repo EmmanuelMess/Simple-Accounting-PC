@@ -1,6 +1,6 @@
 package com.emmanuelmess.simpleaccounting.print;
 
-import static com.emmanuelmess.simpleaccounting.Main.columnNames;
+import static com.emmanuelmess.simpleaccounting.Main.COLUMNS;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -46,7 +46,7 @@ public class Print implements Printable {
 		System.out.println("Printing new page: " + page + "!");
 		
 		for(int line = 0; line < linesPerPage && k < month.length; line++, k++) {
-			for(int i = 0; i < columnNames.length; i++) {
+			for(int i = 0; i < COLUMNS.length; i++) {
 				String t = parseAsString(month[k] [i]);
 				g.drawString(t, (int) (spacings [i] - (i != 1? measureText(t, g2d)/2f : 0)), TOP_MARGIN + SPACE_BETWEEN_LINES*(line+1));
 			}
@@ -61,19 +61,19 @@ public class Print implements Printable {
 	private int[] printHeader(Graphics g, int pageEnd, int page) {
 		g.drawString(String.valueOf(page), (int) (pageEnd/2f-measureText(String.valueOf(page), g)/2f), NUM_MARGIN);
 		
-		g.drawString(columnNames[0], MARGIN, TOP_MARGIN);
-		g.drawString(columnNames[1], 100, TOP_MARGIN);
+		g.drawString(COLUMNS[0], MARGIN, TOP_MARGIN);
+		g.drawString(COLUMNS[1], 100, TOP_MARGIN);
 		
-		int lengthLast = measureText(columnNames[4], g)-MARGIN;
-		g.drawString(columnNames[2], pageEnd-300-lengthLast, TOP_MARGIN);
-		g.drawString(columnNames[3], pageEnd-200-lengthLast, TOP_MARGIN);
-		g.drawString(columnNames[4], pageEnd-100-lengthLast, TOP_MARGIN);
+		int lengthLast = measureText(COLUMNS[4], g)-MARGIN;
+		g.drawString(COLUMNS[2], pageEnd-300-lengthLast, TOP_MARGIN);
+		g.drawString(COLUMNS[3], pageEnd-200-lengthLast, TOP_MARGIN);
+		g.drawString(COLUMNS[4], pageEnd-100-lengthLast, TOP_MARGIN);
 		
 		int[] data = new int [] {MARGIN, 100, pageEnd-300-lengthLast, pageEnd-200-lengthLast, pageEnd-100-lengthLast};
 		
-		for(int i = 0; i < columnNames.length; i++)
+		for(int i = 0; i < COLUMNS.length; i++)
 			if(i != 1)
-				data[i] += measureText(columnNames[i], g)/2f;
+				data[i] += measureText(COLUMNS[i], g)/2f;
 		
 		return data;
 	}

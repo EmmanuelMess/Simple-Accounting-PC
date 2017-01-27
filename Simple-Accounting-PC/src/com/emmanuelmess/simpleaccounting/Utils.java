@@ -45,4 +45,9 @@ public class Utils {
 		}
 		return number.doubleValue();
 	}
+	
+	public static String capitalize(final String line) {
+		  return line.length() > 0? Character.toUpperCase(line.charAt(0)) + line.substring(1):"";
+	}
+	
 }
