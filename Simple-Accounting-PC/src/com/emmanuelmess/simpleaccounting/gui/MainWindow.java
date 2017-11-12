@@ -8,11 +8,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
+import javax.swing.*;
 import javax.swing.table.TableModel;
 
 import com.emmanuelmess.simpleaccounting.Data;
@@ -38,7 +34,7 @@ public class MainWindow extends JFrame implements MenuListener {
 		db = c;
 		
 		setSize(new Dimension(500, 300));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setResizable(true);
 		setLocationRelativeTo(null);//Centers
 		      
@@ -52,26 +48,23 @@ public class MainWindow extends JFrame implements MenuListener {
 		        
 		table = new BalanceTable(data.getData(), data.getColumnNames());
 
-        table.getModel().addTableModelListener(new TableModelListener() {	
-        	@Override
-	        public void tableChanged(TableModelEvent e) {
-	            int row = e.getFirstRow();
-	            int column = e.getColumn();
-	            System.out.println("Table changed: " + row + "x" + column + "!");
-	            if(row != -1 && column != -1 && column != 4) {
-		            BalanceTable.BalanceTableModel model = (BalanceTable.BalanceTableModel)e.getSource();
-		            Object data = model.getValueAt(row, column);
-		            db.update(row, new String[] {TableGeneral.COLUMNS[column]}, 
-		            		new Object[] {(column == 2 || column == 3? Utils.unformat(data.toString()) : data)});
-		            
-		            if(column == 2 || column == 3) {
-		            	String s = Utils.format(data);
-		            	if(s != data)
-		            		model.setValueAt(s, row, column, false);
-		            	recalculateBalance(row);
-		            }
+        table.getModel().addTableModelListener(e -> {
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+            System.out.println("Table changed: " + row + "x" + column + "!");
+            if(row != -1 && column != -1 && column != 4) {
+	            BalanceTableModel model = (BalanceTableModel)e.getSource();
+	            Object data1 = model.getValueAt(row, column);
+	            db.update(row, new String[] {TableGeneral.COLUMNS[column]},
+			            new Object[] {(column == 2 || column == 3? Utils.unformat(data1.toString()) : data1)});
+
+	            if(column == 2 || column == 3) {
+		            String s = Utils.format(data1);
+		            if(s != data1)
+			            model.setValueAt(s, row, column, false);
+		            recalculateBalance(row);
 	            }
-	        }
+            }
         });
         
 

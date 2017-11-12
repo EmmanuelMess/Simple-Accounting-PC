@@ -2,6 +2,7 @@ package com.emmanuelmess.simpleaccounting.gui.components;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -64,8 +65,7 @@ public class BalanceTable extends JTable {
 	    BalanceTableModel(String[] col, Object[][] d) {
 	    	this.columnNames = col;
 	    	this.data = new ArrayList<>();
-	    	for(Object[] o : d)
-	    		data.add(o);
+		    data.addAll(Arrays.asList(d));
 	    }
 
 	    public int getColumnCount() {

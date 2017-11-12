@@ -11,11 +11,11 @@ public class SQLStatementCreator {
 		statement.append(table);
 		statement.append(" (");
 		for(String s : columns)
-			statement.append(s + ", ");
+			statement.append(s).append(", ");
 		statement.delete(statement.lastIndexOf(", "), statement.length());
 		statement.append(") VALUES (");
 		for (Object elem : data) 
-			statement.append(c(elem) + ", ");
+			statement.append(c(elem)).append(", ");
 		statement.delete(statement.lastIndexOf(", "), statement.length());
 		statement.append(");");
 		System.out.println(statement.toString());
@@ -26,7 +26,7 @@ public class SQLStatementCreator {
 		StringBuilder statement = new StringBuilder();
 		statement.append("SELECT ");
 		for(String s : columns)
-			statement.append(s + ", ");
+			statement.append(s).append(", ");
 		statement.delete(statement.lastIndexOf(", "), statement.length());
 		statement.append(" FROM ");
 		statement.append(table);
@@ -57,7 +57,7 @@ public class SQLStatementCreator {
 		statement.append(table);
 		statement.append(" SET ");
 		for(int i = 0; i < columns.length; i++)
-			statement.append(columns[i] + "=" + c(data[i]) + ", ");
+			statement.append(columns[i]).append("=").append(c(data[i])).append(", ");
 		statement.delete(statement.lastIndexOf(", "), statement.length());
 		statement.append(" WHERE ");
 		statement.append(check);

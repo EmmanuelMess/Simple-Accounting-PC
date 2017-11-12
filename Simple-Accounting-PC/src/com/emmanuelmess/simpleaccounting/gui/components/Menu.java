@@ -4,6 +4,7 @@ import com.emmanuelmess.simpleaccounting.Localization;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JMenu;
@@ -38,21 +39,21 @@ public class Menu extends JMenuBar implements ActionListener {
 		{
 			menuItem = new DifferentiableJMenuItem(nameNew, KeyEvent.VK_N, Item.NEW.ordinal());
 			menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
-					ActionEvent.CTRL_MASK));
+					InputEvent.CTRL_MASK));
 			menuItem.getAccessibleContext().setAccessibleDescription(nameNew);
 			menuItem.addActionListener(this);
 			menu.add(menuItem);
 			
 			menuItem = new DifferentiableJMenuItem(nameDel, KeyEvent.VK_D, Item.DELETE.ordinal());
 			menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D,
-					ActionEvent.CTRL_MASK));
+					InputEvent.CTRL_MASK));
 			menuItem.getAccessibleContext().setAccessibleDescription(nameDel);
 			menuItem.addActionListener(this);
 			menu.add(menuItem);
 			
 			menuItem = new DifferentiableJMenuItem(namePrint, KeyEvent.VK_P, Item.PRINT.ordinal());
 			menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-					ActionEvent.CTRL_MASK));
+					InputEvent.CTRL_MASK));
 			menuItem.getAccessibleContext().setAccessibleDescription(namePrint);
 			menuItem.addActionListener(this);
 			menu.add(menuItem);
