@@ -67,7 +67,7 @@ public class Toolbar extends JToolBar implements ActionListener {
 			
 			listener.onButtonClick(item);
 		} else if (e.getSource() instanceof JComboBox<?>) {
-			String text = ((JComboBox<String>) e.getSource()).getSelectedItem().toString();
+			String text = ((JComboBox<?>) e.getSource()).getSelectedItem().toString();
 			for(int i = 0; i < Localization.getInstance().MONTHS.length; i++)
 				if(text.substring(0, text.indexOf(" ")).equals(Localization.getInstance().MONTHS[i]))
 					listener.onComboBoxClick(i, Integer.parseInt(text.substring(text.indexOf(" ")+1)));

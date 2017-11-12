@@ -24,8 +24,7 @@ public class TableGeneral extends Database {
 	public void addNew(int date, int month, int year) {
 		try (Statement stat = con.createStatement()) {
 			stat.executeUpdate(SQLStatementCreator.insert(TABLE_NAME, COLUMNS, 
-					new Object[]{new Integer(date), new String(""), new Double(0d), 
-							new Double(0d), new Integer(month), new Integer(year)}));
+					new Object[]{date, "", 0d, 0d, month, year}));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
