@@ -48,10 +48,12 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-*/bin/*
-
-Simple-Accounting-PC/data.db
+# Code Recommenders
+.recommenders/
 
 .idea/workspace.xml
-Simple-Accounting-PC/.idea/
 *.iml
+Simple-Accounting-PC/.idea/
+Simple-Accounting-PC/data.db
+!*/bin/*.properties
+Simple-Accounting-PC/out/

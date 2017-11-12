@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import com.emmanuelmess.simpleaccounting.Main;
+import com.emmanuelmess.simpleaccounting.Localization;
 
 public class BalanceTable extends JTable {
 
@@ -34,7 +34,7 @@ public class BalanceTable extends JTable {
         setFillsViewportHeight(true);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for(int x = 0; x < Main.COLUMNS.length; x++) {
+        for(int x = 0; x < Localization.getInstance().COLUMNS.length; x++) {
         	if(x == 1) continue;
         	getColumnModel().getColumn(x).setCellRenderer(centerRenderer);
         }

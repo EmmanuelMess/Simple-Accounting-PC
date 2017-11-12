@@ -5,8 +5,8 @@ import static com.emmanuelmess.simpleaccounting.Utils.convert;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import com.emmanuelmess.simpleaccounting.Main;
 import com.emmanuelmess.simpleaccounting.Utils;
+import com.emmanuelmess.simpleaccounting.Localization;
 
 public class ProcessData {
 	
@@ -26,7 +26,7 @@ public class ProcessData {
 					"$ " + Utils.format(balance)});
 		}
 		
-		return data.toArray(new Object[data.size()][Main.COLUMNS.length]);
+		return data.toArray(new Object[data.size()][Localization.getInstance().COLUMNS.length]);
 	}
 	
 }

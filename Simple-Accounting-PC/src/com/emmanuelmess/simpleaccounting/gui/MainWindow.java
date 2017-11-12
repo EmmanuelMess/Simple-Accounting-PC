@@ -16,7 +16,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import com.emmanuelmess.simpleaccounting.Data;
-import com.emmanuelmess.simpleaccounting.Main;
+import com.emmanuelmess.simpleaccounting.Localization;
 import com.emmanuelmess.simpleaccounting.Utils;
 import com.emmanuelmess.simpleaccounting.databases.TableGeneral;
 import com.emmanuelmess.simpleaccounting.gui.components.BalanceTable;
@@ -29,12 +29,11 @@ import com.emmanuelmess.simpleaccounting.print.Print;
 
 public class MainWindow extends JFrame implements MenuListener {
 	
-	private static final long serialVersionUID = 1L;
 	private BalanceTable table;
 	private TableGeneral db;
 	
 	public MainWindow(Data<Object> data, TableGeneral c) {
-		super("Simple Accounting");
+		super(Localization.getString("title"));
 		
 		db = c;
 		
@@ -163,6 +162,6 @@ public class MainWindow extends JFrame implements MenuListener {
 
 	@Override
 	public void onComboBoxClick(int month, int year) {
-		System.out.println("Loading month: " + Main.MONTHS[month] + "-" + year);
+		System.out.println("Loading month: " + Localization.getInstance().MONTHS[month] + "-" + year);
 	}
 }

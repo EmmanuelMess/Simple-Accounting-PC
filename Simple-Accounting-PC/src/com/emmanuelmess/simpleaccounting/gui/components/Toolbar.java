@@ -9,8 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JToolBar;
 
-import com.emmanuelmess.simpleaccounting.Main;
 import com.emmanuelmess.simpleaccounting.Utils;
+import com.emmanuelmess.simpleaccounting.Localization;
 
 public class Toolbar extends JToolBar implements ActionListener {
 
@@ -29,7 +29,7 @@ public class Toolbar extends JToolBar implements ActionListener {
 		
 		String month = Utils.capitalize(new SimpleDateFormat("MMMMM yyyy").format(new Date()));
 		
-		String[] monthStrings = {Main.MONTHS[10] + " 2016", month}; 
+		String[] monthStrings = {Localization.getInstance().MONTHS[10] + " 2016", month};
 		
 		JComboBox<String> monthsList = new JComboBox<>(monthStrings);
 		monthsList.setSelectedIndex(monthsList.getItemCount()-1);
@@ -67,9 +67,9 @@ public class Toolbar extends JToolBar implements ActionListener {
 			
 			listener.onButtonClick(item);
 		} else if (e.getSource() instanceof JComboBox<?>) {
-			String text = ((JComboBox<String>)e.getSource()).getSelectedItem().toString();
-			for(int i = 0; i < Main.MONTHS.length; i++)
-				if(text.substring(0, text.indexOf(" ")).equals(Main.MONTHS[i]))
+			String text = ((JComboBox<String>) e.getSource()).getSelectedItem().toString();
+			for(int i = 0; i < Localization.getInstance().MONTHS.length; i++)
+				if(text.substring(0, text.indexOf(" ")).equals(Localization.getInstance().MONTHS[i]))
 					listener.onComboBoxClick(i, Integer.parseInt(text.substring(text.indexOf(" ")+1)));
 		}
 	}
